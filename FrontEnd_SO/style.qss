@@ -1,0 +1,115 @@
+/* teste para deixar o botão bonito*/
+QPushButton {
+    background-color: #2b303b; 
+    color: #e8eff2;            
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    border-left: 4px solid transparent; /* Deixa o espaço reservado para a barrinha */
+}
+
+/* Quando passa o mouse por cima */
+QPushButton:hover {
+    background-color: #264f61; 
+}
+
+#Botao_AbrirArquivo, #Botao_sair, #botao_IniciarSimulacao, #Botao_gerarRelatorio{
+    background-color: #264f61; 
+    border-radius: 6px;
+    color: #e8eff2;            
+    padding: 8px 16px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#Botao_AbrirArquivo:hover, #Botao_sair:hover, #botao_IniciarSimulacao:hover , #Botao_gerarRelatorio:hover{
+    background-color: #2b7493; 
+}
+
+#Botao_AbrirArquivo:pressed, #Botao_sair:pressed, #botao_IniciarSimulacao:pressed , #Botao_gerarRelatorio:pressed{
+    background-color:#5ac5c9; /* A barrinha brilhante na esquerda */ 
+}
+
+/* Quando o botão está ativado/pressionado (Fica travado aqui) */
+QPushButton:checked {
+    background-color: #2b7493; /* Cor azul de destaque */
+    border-left: 4px solid #5ac5c9; /* A barrinha brilhante na esquerda */
+    color: #ffffff;
+}
+
+/* Estilo dos frames em geral */
+
+#BordaEscura {
+    background-color: #2b303b;
+    border: 2px solid #2b7493;
+}
+
+#mainFrame {
+    padding: 10px;
+    background-color: #181d29;
+}
+
+.QFrame {
+    padding: 10px;
+    background-color: #2b303b;
+    border-radius: 6px;
+}
+
+/* design de labels em geral =--------------------------------------=*/
+
+.QLabel {
+    background-color: #264f61;
+    color: #e8eff2;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+#Titulo_config, #Titulo_memoria, #Titulo, #Titulo_LinhaTempo, #Titulo_MetricasGerais, #Titulo_MetricasIndividuais{
+    border: none;
+    font-size: 24px;
+    background-color: #2b7493;
+    border-radius: 6px;
+    border-bottom: 2px solid #58a0be;
+}
+
+/* =------------------------------------------------= */
+
+QLineEdit {
+    background-color: #272733;
+    color: #e8eff2;
+    border-color: #2b7493;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+QLineEdit:focus {
+    border: 1px solid #5ac5c9;
+}
+
+QStackedWidget {
+    background-color: #181d29;
+}
+
+/* style do widget: QTableWidget  =---------------------------------= */
+QTableWidget {
+    border-radius: 6px;
+    background-color: #181d29;  
+}
+
+QTableWidget::item {
+    border: none;
+    background-color: #212a3d;  
+
+    border-bottom: 2px solid #264f61;
+}
+
+QHeaderView::section {
+    border: none;
+    background-color: #264f61;
+    color: #e8eff2;
+    font-weight: bold;
+
+    border-bottom: 2px solid #58a0be;
+}

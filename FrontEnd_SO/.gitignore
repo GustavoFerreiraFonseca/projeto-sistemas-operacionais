@@ -1,0 +1,17 @@
+# Configurações do Qt Creator
+*.pro.user
+*.pro.user.*
+*.cmake.user
+*.cmake.user.*
+
+# Arquivos gerados de compilação
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.exe
+
+# Pastas de Build (caso fiquem dentro do projeto)
+build*/
