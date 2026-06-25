@@ -27,6 +27,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         recursos.qrc
+        Process.h
+        Scheduler.h Scheduler.cpp
+        MemoryManager.h MemoryManager.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET FrontEnd_SO APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1231</width>
-    <height>750</height>
+    <height>809</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -206,7 +206,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="CarregandoArquivoCSV">
            <layout class="QVBoxLayout" name="verticalLayout_6">
