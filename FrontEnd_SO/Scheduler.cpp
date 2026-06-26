@@ -5,7 +5,6 @@ Scheduler::Scheduler(std::vector<Process> processes, Algorithm algo, int quantum
     : allProcesses(processes), selectedAlgo(algo), quantumTime(quantum) {}
 
 void Scheduler::runSimulation() {
-    // Ordena inicialmente por tempo de chegada
     std::sort(allProcesses.begin(), allProcesses.end(), [](const Process& a, const Process& b) {
         return a.arrivalTime < b.arrivalTime;
     });
@@ -24,7 +23,6 @@ void Scheduler::simulateSJFP() {
     size_t completed = 0;
     std::vector<Process*> readyQueue;
 
-    // Filtro de segurança: ignora processos com tempo de execução zero
     std::vector<Process*> activeProcesses;
     for (auto& p : allProcesses) {
         if (p.burstTime > 0) activeProcesses.push_back(&p);
@@ -46,9 +44,6 @@ void Scheduler::simulateSJFP() {
             });
 
             Process* currentProc = *idx;
-            if (currentProc->responseTime == -1) {
-                currentProc->responseTime = currentTime - currentProc->arrivalTime;
-            }
 
             currentProc->remainingTime--;
             timeline.push_back({currentTime, currentProc->id});
@@ -56,6 +51,7 @@ void Scheduler::simulateSJFP() {
             if (currentProc->remainingTime == 0) {
                 currentProc->completionTime = currentTime + 1;
                 currentProc->waitTime = currentProc->completionTime - currentProc->arrivalTime - currentProc->burstTime;
+                currentProc->responseTime = currentProc->completionTime - currentProc->arrivalTime; // Perfeito!
                 readyQueue.erase(idx);
                 completed++;
             }
@@ -66,7 +62,6 @@ void Scheduler::simulateSJFP() {
     }
 }
 
-// Faça a mesma proteção na função de Prioridade Preemptiva:
 void Scheduler::simulatePriorityP() {
     int currentTime = 0;
     size_t completed = 0;
@@ -96,9 +91,7 @@ void Scheduler::simulatePriorityP() {
             });
 
             Process* currentProc = *idx;
-            if (currentProc->responseTime == -1) {
-                currentProc->responseTime = currentTime - currentProc->arrivalTime;
-            }
+            // Bloco antigo de resposta removido daqui de forma limpa!
 
             currentProc->remainingTime--;
             timeline.push_back({currentTime, currentProc->id});
@@ -106,6 +99,7 @@ void Scheduler::simulatePriorityP() {
             if (currentProc->remainingTime == 0) {
                 currentProc->completionTime = currentTime + 1;
                 currentProc->waitTime = currentProc->completionTime - currentProc->arrivalTime - currentProc->burstTime;
+                currentProc->responseTime = currentProc->completionTime - currentProc->arrivalTime; // Corrigido!
                 readyQueue.erase(idx);
                 completed++;
             }
@@ -120,41 +114,31 @@ void Scheduler::simulateRoundRobin() {
     int currentTime = 0;
     size_t completed = 0;
     std::queue<Process*> readyQueue;
-    size_t pointer = 0; // Para controlar quais processos já entraram na fila por tempo de chegada
+    size_t pointer = 0;
 
-    // Ordena por tempo de chegada inicialmente (garantia extra)
     std::sort(allProcesses.begin(), allProcesses.end(), [](const Process& a, const Process& b) {
         return a.arrivalTime < b.arrivalTime;
     });
 
-    // Loop até que todos os processos sejam concluídos
     while (completed < allProcesses.size()) {
 
-        // 1. Coloca na fila de prontos todos os processos que chegaram neste instante 'currentTime'
         while (pointer < allProcesses.size() && allProcesses[pointer].arrivalTime <= currentTime) {
             readyQueue.push(&allProcesses[pointer]);
             pointer++;
         }
 
         if (!readyQueue.empty()) {
-            // Pega o próximo processo da fila
             Process* currentProc = readyQueue.front();
             readyQueue.pop();
 
-            // Métrica de tempo de resposta (primeira vez que executa)
-            if (currentProc->responseTime == -1) {
-                currentProc->responseTime = currentTime - currentProc->arrivalTime;
-            }
+            // Bloco antigo de resposta removido daqui para evitar conflito com o Quantum!
 
-            // Define quanto tempo ele vai rodar neste turno (o menor entre o quantum ou o que resta)
             int timeToExecute = std::min(quantumTime, currentProc->remainingTime);
 
-            // Simula a execução passo a passo dentro do intervalo do quantum
             for (int i = 0; i < timeToExecute; ++i) {
                 timeline.push_back({currentTime, currentProc->id});
                 currentTime++;
 
-                // Importante: Enquanto o processo executa, novos processos podem chegar!
                 while (pointer < allProcesses.size() && allProcesses[pointer].arrivalTime <= currentTime) {
                     readyQueue.push(&allProcesses[pointer]);
                     pointer++;
@@ -163,17 +147,15 @@ void Scheduler::simulateRoundRobin() {
 
             currentProc->remainingTime -= timeToExecute;
 
-            // Se o processo terminou
             if (currentProc->remainingTime == 0) {
                 currentProc->completionTime = currentTime;
                 currentProc->waitTime = currentProc->completionTime - currentProc->arrivalTime - currentProc->burstTime;
+                currentProc->responseTime = currentProc->completionTime - currentProc->arrivalTime; // Corrigido!
                 completed++;
             } else {
-                // Se não terminou, ele volta para o fim da fila de prontos
                 readyQueue.push(currentProc);
             }
         } else {
-            // Se a fila está vazia, a CPU ficou ociosa neste instante
             timeline.push_back({currentTime, "IDLE"});
             currentTime++;
         }
