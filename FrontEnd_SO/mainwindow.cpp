@@ -270,6 +270,7 @@ void MainWindow::on_botao_IniciarSimulacao_clicked()
     ui->tableWidget_3->setItem(4, 1, new QTableWidgetItem(QString::number(gerenciadorMemoria.getPageFaults())));
 
     // 5. Redireciona para o frame de relatórios
+    ui->Botao_TelaRelatorio->setChecked(true);
     ui->Lista_Frames->setCurrentWidget(ui->RelatorioDaSimulacao);
 }
 
