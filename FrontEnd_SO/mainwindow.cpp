@@ -138,7 +138,7 @@ void MainWindow::on_botao_IniciarSimulacao_clicked()
     // 2. Captura configurações de Processos do Front-End
     QString algoTexto = ui->comboBox->currentText();
     Algorithm algoSelecionado = Algorithm::RoundRobin;
-    int quantum = 2;
+    int quantum = ui->lineEdit_3->text().toInt() <= 0 ? 2 : ui->lineEdit_3->text().toInt();
 
     if (algoTexto.contains("Round-Robin") || algoTexto.contains("RR")) {
         algoSelecionado = Algorithm::RoundRobin;
@@ -270,6 +270,7 @@ void MainWindow::on_botao_IniciarSimulacao_clicked()
     ui->tableWidget_3->setItem(4, 1, new QTableWidgetItem(QString::number(gerenciadorMemoria.getPageFaults())));
 
     // 5. Redireciona para o frame de relatórios
+    ui->Botao_TelaRelatorio->setChecked(true);
     ui->Lista_Frames->setCurrentWidget(ui->RelatorioDaSimulacao);
 }
 
@@ -285,5 +286,15 @@ void MainWindow::on_Botao_TelaRelatorio_clicked()
 
     // Se já tiver dados simulados, apenas navega para o frame do relatório
     ui->Lista_Frames->setCurrentWidget(ui->RelatorioDaSimulacao);
+}
+
+void MainWindow::on_comboBox_activated(int index)
+{
+    if (ui->comboBox->currentText() == "Round-Robin(RR)")
+    {
+        ui->lineEdit_3->setDisabled(false);
+    } else {
+        ui->lineEdit_3->setDisabled(true);
+    }
 }
 

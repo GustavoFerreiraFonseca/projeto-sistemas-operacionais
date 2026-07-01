@@ -36,6 +36,8 @@ class MainWindow : public QMainWindow
 
         void on_botao_IniciarSimulacao_clicked();
 
+        void on_comboBox_activated(int index);
+
     public:
         explicit MainWindow(QWidget *parent = nullptr);
 
